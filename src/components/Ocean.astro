@@ -1,0 +1,123 @@
+---
+// ค่าคงที่ ไม่ใช้ Math.random เพื่อให้ build ออกมาเหมือนเดิมทุกครั้ง
+const bubbles = [
+  { left: 8,  size: 10, delay: 0,   duration: 14 },
+  { left: 18, size: 6,  delay: 3,   duration: 11 },
+  { left: 31, size: 14, delay: 7,   duration: 18 },
+  { left: 45, size: 8,  delay: 1,   duration: 12 },
+  { left: 58, size: 12, delay: 5,   duration: 16 },
+  { left: 72, size: 7,  delay: 9,   duration: 13 },
+  { left: 86, size: 11, delay: 2,   duration: 17 },
+  { left: 94, size: 5,  delay: 6,   duration: 10 },
+];
+---
+
+<div class="ocean" aria-hidden="true">
+  <div class="rays"></div>
+
+  {bubbles.map((b) => (
+    <span
+      class="bubble"
+      style={`left:${b.left}%;width:${b.size}px;height:${b.size}px;animation-duration:${b.duration}s;animation-delay:-${b.delay}s;`}
+    ></span>
+  ))}
+
+  <svg class="fish fish-1" viewBox="0 0 60 30" width="60" height="30">
+    <path d="M4 15 Q20 2 40 15 Q20 28 4 15 Z" fill="rgba(79,209,255,0.35)" />
+    <path d="M40 15 L56 6 L52 15 L56 24 Z" fill="rgba(79,209,255,0.35)" />
+    <circle cx="14" cy="13" r="1.8" fill="rgba(230,240,255,0.8)" />
+  </svg>
+
+  <svg class="fish fish-2" viewBox="0 0 60 30" width="44" height="22">
+    <path d="M4 15 Q20 2 40 15 Q20 28 4 15 Z" fill="rgba(143,166,201,0.3)" />
+    <path d="M40 15 L56 6 L52 15 L56 24 Z" fill="rgba(143,166,201,0.3)" />
+  </svg>
+</div>
+
+<style>
+  .ocean {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* แสงจากผิวน้ำด้านบน */
+  .rays {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 60%;
+    background: linear-gradient(
+      170deg,
+      rgba(var(--accent), 0.12) 0%,
+      rgba(var(--accent), 0) 60%
+    );
+    filter: blur(30px);
+    opacity: 0.6;
+    animation: shimmer 9s ease-in-out infinite alternate;
+  }
+
+  /* ฟองอากาศ */
+  .bubble {
+    position: absolute;
+    bottom: -40px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--accent), 0.45);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.35),
+      rgba(var(--accent), 0.05) 60%
+    );
+    animation-name: rise;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
+
+  /* ปลา */
+  .fish {
+    position: absolute;
+    opacity: 0.7;
+    will-change: transform;
+  }
+  .fish-1 {
+    top: 30%;
+    left: -80px;
+    animation: swim 40s linear infinite;
+  }
+  .fish-2 {
+    top: 68%;
+    left: -60px;
+    animation: swim 55s linear infinite reverse;
+    animation-delay: -20s;
+  }
+  .fish-2 {
+    transform: scaleX(-1);
+  }
+
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 0.8; }
+    50%  { transform: translateY(-55vh) translateX(10px); }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-110vh) translateX(-8px); opacity: 0; }
+  }
+
+  @keyframes swim {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(100vw + 160px)); }
+  }
+
+  @keyframes shimmer {
+    from { opacity: 0.4; }
+    to   { opacity: 0.8; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bubble, .fish, .rays {
+      animation: none !important;
+    }
+    .bubble { opacity: 0.25; transform: none; bottom: auto; }
+  }
+</style>
