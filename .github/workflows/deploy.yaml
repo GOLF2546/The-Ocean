@@ -16,14 +16,14 @@ concurrency:
 
 jobs:
   build:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-    - uses: withastro/action@v3
-      with:
-        package-manager: npm
-        node-version: 22
+      - uses: withastro/action@v3
+        with:
+          package-manager: npm
+          node-version: 22
 
   deploy:
     needs: build
