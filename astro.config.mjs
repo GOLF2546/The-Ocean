@@ -8,7 +8,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://example.com',
+    site: 'https://GOLF2546.github.io',
+    base: '/The-Ocean',
     integrations: [mdx(), sitemap(), react()],
     fonts: [
         {
